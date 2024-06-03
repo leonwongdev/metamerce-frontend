@@ -1,11 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosInstance from "../api/axiosConfig";
+import { useSelector, useDispatch } from "react-redux";
+import { signin, signout } from "../redux/slice/authSlice";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -18,8 +21,8 @@ function SignIn() {
       })
       .then((res) => {
         console.log("Response: ", res);
-        localStorage.setItem("jwt", res.data.jwt);
-        localStorage.setItem("email", email);
+
+        dispatch(signin({ email: email, jwt: res.data.jwt }));
         navigate("/");
       })
       .catch((error) => {

@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { signout } from "../redux/slice/authSlice";
 const ProfileDropDown = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onLogout = () => {
-    // Remove jwt and email from local storage
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("email");
+    dispatch(signout());
     navigate("/");
   };
   return (
@@ -24,7 +24,7 @@ const ProfileDropDown = () => {
           <a>Settings</a>
         </li>
         <li>
-          <a>Logout</a>
+          <a onClick={onLogout}>Logout</a>
         </li>
       </ul>
     </>
@@ -32,9 +32,8 @@ const ProfileDropDown = () => {
 };
 
 function Navbar() {
-  const userEmail = localStorage.getItem("email");
-  console.log("User Email: ", userEmail);
-  const isLoggedIn = userEmail !== ""; // TODO: Replace with actual login status
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userEmail = useSelector((state) => state.auth.email);
   return (
     <nav>
       <div className="navbar bg-base-100">
@@ -97,7 +96,7 @@ function Navbar() {
               </div> */}
               <div className="avatar placeholder">
                 <div className="bg-neutral text-neutral-content rounded-full w-11">
-                  {isLoggedIn ? (
+                  {isAuthenticated ? (
                     <span>{userEmail}</span>
                   ) : (
                     <Link to="/signin">SignIn</Link>
@@ -107,7 +106,7 @@ function Navbar() {
             </div>
 
             {/* Show below if logged in */}
-            {isLoggedIn ? <ProfileDropDown /> : null}
+            {isAuthenticated ? <ProfileDropDown /> : null}
           </div>
         </div>
       </div>
