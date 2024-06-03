@@ -22,7 +22,7 @@ const ProductDetail = () => {
     axiosInstance
       .get(`/api/product/${id}`, {
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          // Authorization: `Bearer ${jwt}`,
         },
       })
       .then((res) => {
@@ -39,6 +39,12 @@ const ProductDetail = () => {
   }, []);
 
   const onAddToCart = () => {
+    // Check if user is authenticated first, if not redirect to signin
+    if (!jwt) {
+      navigate("/signin");
+      return;
+    }
+
     //POST /api/cart/add?productId=2&quantity=2
     console.log("Add to cart");
     setIsAddingToCart(true);
