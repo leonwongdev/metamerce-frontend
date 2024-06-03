@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { signin, signout } from "../redux/slice/authSlice";
 
 function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("leon2@leonwong.dev");
+  const [password, setPassword] = useState("12345678");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -39,6 +39,7 @@ function SignIn() {
             className="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none"
             placeholder="Email"
             name="email"
+            value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -47,6 +48,7 @@ function SignIn() {
             type="password"
             className="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none"
             placeholder="Password"
+            value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}

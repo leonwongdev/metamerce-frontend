@@ -1,49 +1,70 @@
 import { Link } from "react-router-dom";
-function ProductCarousel() {
-  // const [product, setProducts] = useState([]);
+import axiosInstance from "../api/axiosConfig";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-  const products = [
-    {
-      id: 1,
-      name: "Naruto Figure 1",
-      description: "Test",
-      price: 110,
-      category: null,
-      imageUrl:
-        "https://img2.cgtrader.com/items/2895079/2f05452561/large/naruto-uzumaki-3d-model-stl.jpg",
-      creationDate: "2024-06-02T20:11:08.000+00:00",
-    },
-    {
-      id: 2,
-      name: "Naruto Figure 2",
-      description: "Test",
-      price: 50,
-      category: null,
-      imageUrl:
-        "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
-      creationDate: null,
-    },
-    {
-      id: 3,
-      name: "Naruto Figure 2",
-      description: "Test",
-      price: 50,
-      category: null,
-      imageUrl:
-        "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
-      creationDate: null,
-    },
-    {
-      id: 4,
-      name: "Naruto Figure 2",
-      description: "Test",
-      price: 50,
-      category: null,
-      imageUrl:
-        "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
-      creationDate: null,
-    },
-  ];
+function ProductCarousel() {
+  const [products, setProducts] = useState([]);
+  const jwt = useSelector((state) => state.auth.jwt);
+  useEffect(() => {
+    // Fetch products from the server, set header with jwt
+    axiosInstance
+      .get("/api/product", {
+        headers: {
+          //Authorization: `Bearer ${jwt}`,
+        },
+      })
+      .then((res) => {
+        console.log("Response: ", res);
+        setProducts(res.data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }, []);
+
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: "Naruto Figure 1",
+  //     description: "Test",
+  //     price: 110,
+  //     category: null,
+  //     imageUrl:
+  //       "https://img2.cgtrader.com/items/2895079/2f05452561/large/naruto-uzumaki-3d-model-stl.jpg",
+  //     creationDate: "2024-06-02T20:11:08.000+00:00",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Naruto Figure 2",
+  //     description: "Test",
+  //     price: 50,
+  //     category: null,
+  //     imageUrl:
+  //       "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
+  //     creationDate: null,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Naruto Figure 2",
+  //     description: "Test",
+  //     price: 50,
+  //     category: null,
+  //     imageUrl:
+  //       "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
+  //     creationDate: null,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Naruto Figure 2",
+  //     description: "Test",
+  //     price: 50,
+  //     category: null,
+  //     imageUrl:
+  //       "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
+  //     creationDate: null,
+  //   },
+  // ];
 
   function renderProductsCarousel(products) {
     if (!products || products.length === 0) {
