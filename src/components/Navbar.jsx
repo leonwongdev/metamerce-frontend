@@ -15,6 +15,11 @@ const ProfileDropDown = () => {
         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
         <li>
+          <Link to="/myorders" className="justify-between">
+            My Orders
+          </Link>
+        </li>
+        <li>
           <a className="justify-between">Profile</a>
         </li>
         <li>

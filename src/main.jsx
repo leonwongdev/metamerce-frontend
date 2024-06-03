@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar.jsx";
 import Cart from "./components/Cart.jsx";
 import SignUp from "./components/Signup.jsx";
 import SignIn from "./components/Signin.jsx";
+import MyOrders from "./components/MyOrders.jsx";
 
 function Layout() {
   return (
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
       { path: "signin", element: <SignIn /> },
       // Signup
       { path: "signup", element: <SignUp /> },
+      // My orders
+      { path: "myorders", element: <MyOrders /> },
     ],
   },
 ]);

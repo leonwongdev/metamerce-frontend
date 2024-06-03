@@ -103,6 +103,12 @@ export default function Cart() {
     e.preventDefault();
     console.log("Place order");
 
+    // Check if cart is empty
+    if (cartData === null || cartData.cartItems.length === 0) {
+      alert("Cart is empty cannot place order");
+      return;
+    }
+
     // Validate form
     // Check if all fields are filled, use trim to remove whitespace
     // Else alert user to fill in all fields
