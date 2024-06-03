@@ -1,9 +1,12 @@
+import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <nav>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">3D Anime Figures Store</a>
+          <Link to="/" className="btn btn-ghost text-xl">
+            3D Anime Figures Store
+          </Link>
         </div>
         <div className="flex-none">
           <div className="dropdown dropdown-end">
