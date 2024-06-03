@@ -12,6 +12,7 @@ import Cart from "./components/Cart.jsx";
 import SignUp from "./components/Signup.jsx";
 import SignIn from "./components/Signin.jsx";
 import MyOrders from "./components/MyOrders.jsx";
+import OrderDetail from "./components/OrderDetail.jsx";
 
 function Layout() {
   return (
@@ -37,6 +38,8 @@ const router = createBrowserRouter([
       { path: "signup", element: <SignUp /> },
       // My orders
       { path: "myorders", element: <MyOrders /> },
+      // Order Detail
+      { path: "order/:id", element: <OrderDetail /> },
     ],
   },
 ]);

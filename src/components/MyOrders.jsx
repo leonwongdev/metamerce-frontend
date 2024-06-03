@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axiosInstance from "../api/axiosConfig";
 
 const MyOrders = () => {
   // States
   const [orders, setOrders] = useState(null);
+
+  // Hook
+  const navigate = useNavigate();
 
   // Redux
   const jwt = useSelector((state) => state.auth.jwt);
@@ -28,8 +32,20 @@ const MyOrders = () => {
       })
       .catch((error) => {
         console.error("Error: ", error);
+        if (error.response.data.message === "Invalid Token") {
+          console.log("Invalid Token");
+          navigate("/signin");
+        }
       });
   }, []);
+
+  function viewOrderDetails(orderId) {
+    // Redirect to the OrderDetail page
+    // Pass the orderId
+    // Use the useParams hook to get the orderId
+
+    navigate(`/order/${orderId}`);
+  }
 
   function renderOrders() {
     return (
@@ -47,7 +63,7 @@ const MyOrders = () => {
           <tbody>
             {orders &&
               orders.map((order) => (
-                <tr key={order.id} class="hover">
+                <tr key={order.id} className="hover">
                   <td className="">{order.id}</td>
                   <td className="">{order.orderStatus}</td>
                   <td className="">{order.totalPrice}</td>
@@ -55,7 +71,7 @@ const MyOrders = () => {
                   <td className="">
                     <button
                       className="btn btn-neutral"
-                      // onClick={() => viewOrderDetails(order.id)}
+                      onClick={() => viewOrderDetails(order.id)}
                     >
                       View Details
                     </button>
@@ -68,7 +84,7 @@ const MyOrders = () => {
     );
   }
 
-  return <div>{renderOrders()}</div>;
+  return <div className="h-screen">{renderOrders()}</div>;
 };
 
 export default MyOrders;
