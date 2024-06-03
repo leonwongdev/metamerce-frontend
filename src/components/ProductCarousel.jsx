@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function ProductCarousel() {
   // const [product, setProducts] = useState([]);
 
@@ -59,8 +60,9 @@ function ProductCarousel() {
             {/* Card Content start */}
             <h2 className="text-center font-semibold">{p.name}</h2>
             <img src={p.imageUrl} className="rounded-box  h-3/4" />
-            <button className="btn btn btn-accent my-3">Detail</button>
-            {/* Arrow buttons below */}
+            <Link to={`/product/${p.id}`} className="btn btn btn-accent my-3">
+              Detail
+            </Link>
           </div>
         ))}
       </div>
