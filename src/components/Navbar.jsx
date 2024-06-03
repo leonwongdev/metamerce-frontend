@@ -1,6 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProfileDropDown = () => {
+  const navigate = useNavigate();
+  const onLogout = () => {
+    // Remove jwt and email from local storage
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("email");
+    navigate("/");
+  };
   return (
     <>
       <ul
@@ -25,7 +32,9 @@ const ProfileDropDown = () => {
 };
 
 function Navbar() {
-  const isLoggedIn = true; // TODO: Replace with actual login status
+  const userEmail = localStorage.getItem("email");
+  console.log("User Email: ", userEmail);
+  const isLoggedIn = userEmail !== ""; // TODO: Replace with actual login status
   return (
     <nav>
       <div className="navbar bg-base-100">
@@ -88,7 +97,11 @@ function Navbar() {
               </div> */}
               <div className="avatar placeholder">
                 <div className="bg-neutral text-neutral-content rounded-full w-11">
-                  <span>SignIn</span>
+                  {isLoggedIn ? (
+                    <span>{userEmail}</span>
+                  ) : (
+                    <Link to="/signin">SignIn</Link>
+                  )}
                 </div>
               </div>
             </div>
