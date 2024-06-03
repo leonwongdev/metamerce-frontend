@@ -67,7 +67,9 @@ const MyOrders = () => {
                   <td className="">{order.id}</td>
                   <td className="">{order.orderStatus}</td>
                   <td className="">{order.totalPrice}</td>
-                  <td className="">{order.createdAt}</td>
+                  <td className="">
+                    {new Date(order.createdAt).toLocaleString()}
+                  </td>
                   <td className="">
                     <button
                       className="btn btn-neutral"

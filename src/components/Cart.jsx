@@ -12,6 +12,8 @@ export default function Cart() {
   const [province, setProvince] = useState("Ontario");
   const [country, setCountry] = useState("Canada");
   const [postalCode, setPostalCode] = useState("M9W6V3");
+  const [modalMessage, setModalMessage] = useState("");
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   // Hook
   const navigate = useNavigate();
@@ -54,58 +56,14 @@ export default function Cart() {
       });
   }
 
-  // const cartData = {
-  //   id: 2,
-  //   total: 430,
-  //   cartItems: [
-  //     {
-  //       id: 202,
-  //       product: {
-  //         id: 1,
-  //         name: "Naruto Figure 1",
-  //         description: "Test",
-  //         price: 110,
-  //         category: null,
-  //         imageUrl:
-  //           "https://img2.cgtrader.com/items/2895079/2f05452561/large/naruto-uzumaki-3d-model-stl.jpg",
-  //         creationDate: "2024-06-02T20:11:08.000+00:00",
-  //       },
-  //       quantity: 3,
-  //       totalPrice: 330,
-  //     },
-  //     {
-  //       id: 203,
-  //       product: {
-  //         id: 2,
-  //         name: "Naruto Figure 2",
-  //         description: "Test",
-  //         price: 50,
-  //         category: null,
-  //         imageUrl:
-  //           "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
-  //         creationDate: null,
-  //       },
-  //       quantity: 2,
-  //       totalPrice: 100,
-  //     },
-  //   ],
-  // };
-
-  // const address = {
-  //   street: "123 Main St",
-  //   city: "Springfield",
-  //   province: "Illinois",
-  //   country: "USA",
-  //   postalCode: "62701",
-  // };
-
   function onPlaceOrder(e) {
     e.preventDefault();
     console.log("Place order");
 
     // Check if cart is empty
     if (cartData === null || cartData.cartItems.length === 0) {
-      alert("Cart is empty cannot place order");
+      setModalMessage("Cart is empty, please add items to cart first");
+      document.getElementById("modal-1").showModal();
       return;
     }
 
@@ -119,7 +77,8 @@ export default function Cart() {
       country.trim() === "" ||
       postalCode.trim() === ""
     ) {
-      alert("Please fill in all fields");
+      setModalMessage("Please fill in all fields to place order");
+      document.getElementById("modal-1").showModal();
       return;
     }
 
@@ -140,11 +99,50 @@ export default function Cart() {
       )
       .then((res) => {
         console.log("Place order Response: ", res);
-        navigate("/");
+        setOrderPlaced(true);
+        setModalMessage("Congrats! Order placed successfully!");
+        document.getElementById("modal-1").showModal();
       })
       .catch((error) => {
+        setOrderPlaced(false);
+        setModalMessage("Failed to place order, please contact us");
+        document.getElementById("modal-1").showModal();
         console.error("Place Order Error: ", error);
       });
+  }
+
+  function renderModal() {
+    return (
+      <>
+        {/* <button
+          className="btn"
+          onClick={() => document.getElementById("modal-1").showModal()}
+        >
+          open modal
+        </button> */}
+        <dialog id="modal-1" className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Dear Customer</h3>
+            <p className="py-4">{modalMessage}</p>
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button
+                  className="btn"
+                  onClick={() => {
+                    if (orderPlaced) {
+                      navigate("/myorders");
+                    }
+                  }}
+                >
+                  Close
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      </>
+    );
   }
 
   function renderAddressForm() {
@@ -273,6 +271,7 @@ export default function Cart() {
 
   return (
     <div className="pb-10">
+      {renderModal()}
       <div className="p-10 flex gap-3 flex-col">
         <h1 className="text-2xl font-bold">Cart Summary</h1>
         {renderCartItems()}
@@ -283,3 +282,49 @@ export default function Cart() {
     </div>
   );
 }
+
+// Sample Data
+// const cartData = {
+//   id: 2,
+//   total: 430,
+//   cartItems: [
+//     {
+//       id: 202,
+//       product: {
+//         id: 1,
+//         name: "Naruto Figure 1",
+//         description: "Test",
+//         price: 110,
+//         category: null,
+//         imageUrl:
+//           "https://img2.cgtrader.com/items/2895079/2f05452561/large/naruto-uzumaki-3d-model-stl.jpg",
+//         creationDate: "2024-06-02T20:11:08.000+00:00",
+//       },
+//       quantity: 3,
+//       totalPrice: 330,
+//     },
+//     {
+//       id: 203,
+//       product: {
+//         id: 2,
+//         name: "Naruto Figure 2",
+//         description: "Test",
+//         price: 50,
+//         category: null,
+//         imageUrl:
+//           "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
+//         creationDate: null,
+//       },
+//       quantity: 2,
+//       totalPrice: 100,
+//     },
+//   ],
+// };
+
+// const address = {
+//   street: "123 Main St",
+//   city: "Springfield",
+//   province: "Illinois",
+//   country: "USA",
+//   postalCode: "62701",
+// };
