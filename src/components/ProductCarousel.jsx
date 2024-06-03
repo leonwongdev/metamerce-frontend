@@ -53,7 +53,7 @@ function ProductCarousel() {
       <div className="carousel carousel-center p-4 space-x-4 rounded-box h-[400px]">
         {products.map((p, index) => (
           <div
-            key={p._id}
+            key={p.id}
             id={`slide${index + 1}`}
             className="carousel-item relative flex flex-col h-full"
           >

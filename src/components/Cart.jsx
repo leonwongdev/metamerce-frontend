@@ -133,10 +133,10 @@ export default function Cart() {
               <p className="text-gray-500">Total Cost: ${item.totalPrice}</p>
             </div>
             <button
-              className="btn btn-error"
+              className="btn btn-error btn-sm"
               // onClick={() => handleDelete(item.id)}
             >
-              Delete
+              Remove
             </button>
           </div>
         ))}
