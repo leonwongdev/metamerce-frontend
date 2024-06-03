@@ -1,48 +1,72 @@
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axiosInstance from "../api/axiosConfig";
 export default function Cart() {
-  const mockCartData = {
-    id: 2,
-    total: 430,
-    cartItems: [
-      {
-        id: 202,
-        product: {
-          id: 1,
-          name: "Naruto Figure 1",
-          description: "Test",
-          price: 110,
-          category: null,
-          imageUrl:
-            "https://img2.cgtrader.com/items/2895079/2f05452561/large/naruto-uzumaki-3d-model-stl.jpg",
-          creationDate: "2024-06-02T20:11:08.000+00:00",
+  // use useEffect hook to fetch cart data from the server
+  // use the mock cart data below as reference
+  const [cartData, setCartData] = useState(null);
+  const jwt = useSelector((state) => state.auth.jwt);
+  useEffect(() => {
+    axiosInstance
+      .get("/api/cart", {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
         },
-        quantity: 3,
-        totalPrice: 330,
-      },
-      {
-        id: 203,
-        product: {
-          id: 2,
-          name: "Naruto Figure 2",
-          description: "Test",
-          price: 50,
-          category: null,
-          imageUrl:
-            "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
-          creationDate: null,
-        },
-        quantity: 2,
-        totalPrice: 100,
-      },
-    ],
-  };
+      })
+      .then((res) => {
+        console.log("Response: ", res);
+        setCartData(res.data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }, []);
 
-  const address = {
-    street: "123 Main St",
-    city: "Springfield",
-    province: "Illinois",
-    country: "USA",
-    postalCode: "62701",
-  };
+  // const cartData = {
+  //   id: 2,
+  //   total: 430,
+  //   cartItems: [
+  //     {
+  //       id: 202,
+  //       product: {
+  //         id: 1,
+  //         name: "Naruto Figure 1",
+  //         description: "Test",
+  //         price: 110,
+  //         category: null,
+  //         imageUrl:
+  //           "https://img2.cgtrader.com/items/2895079/2f05452561/large/naruto-uzumaki-3d-model-stl.jpg",
+  //         creationDate: "2024-06-02T20:11:08.000+00:00",
+  //       },
+  //       quantity: 3,
+  //       totalPrice: 330,
+  //     },
+  //     {
+  //       id: 203,
+  //       product: {
+  //         id: 2,
+  //         name: "Naruto Figure 2",
+  //         description: "Test",
+  //         price: 50,
+  //         category: null,
+  //         imageUrl:
+  //           "https://llllline.com/images/thumbs/naru/naruto-figure-3d-model-ready-to-print-stl-0000054872-800.jpeg",
+  //         creationDate: null,
+  //       },
+  //       quantity: 2,
+  //       totalPrice: 100,
+  //     },
+  //   ],
+  // };
+
+  // const address = {
+  //   street: "123 Main St",
+  //   city: "Springfield",
+  //   province: "Illinois",
+  //   country: "USA",
+  //   postalCode: "62701",
+  // };
 
   // write a function to render a form for user to input their address use the mock address data above as reference
   // the function should return a form with input fields for street, city, province, country, and postal code
@@ -112,11 +136,11 @@ export default function Cart() {
     );
   }
 
-  return (
-    <div className="pb-10">
-      <div className="p-10 flex gap-3 flex-col">
-        <h1 className="text-2xl font-bold">Cart Summary</h1>
-        {mockCartData.cartItems.map((item) => (
+  function renderCartItems() {
+    console.log("🚀 ~ renderCartItems ~ cartData:", cartData);
+    if (cartData !== null) {
+      return cartData.cartItems.map((item) => (
+        <>
           <div
             key={item.id}
             className="flex flex-row items-center p-4 bg-base-200 shadow-md gap-5"
@@ -139,12 +163,31 @@ export default function Cart() {
               Remove
             </button>
           </div>
-        ))}
+        </>
+      ));
+    }
+    return null;
+  }
+
+  function renderCartTotal() {
+    if (cartData !== null) {
+      return (
         <div className="mt-4 text-left">
           <p className="text-lg font-semibold">
-            Total Price: ${mockCartData.total}
+            Total Price: ${cartData.total}
           </p>
         </div>
+      );
+    }
+    return null;
+  }
+
+  return (
+    <div className="pb-10">
+      <div className="p-10 flex gap-3 flex-col">
+        <h1 className="text-2xl font-bold">Cart Summary</h1>
+        {renderCartItems()}
+        {renderCartTotal()}
       </div>
 
       <div>{renderAddressForm()}</div>
