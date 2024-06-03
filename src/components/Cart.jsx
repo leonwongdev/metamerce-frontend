@@ -6,6 +6,7 @@ export default function Cart() {
   // use useEffect hook to fetch cart data from the server
   // use the mock cart data below as reference
   const [cartData, setCartData] = useState(null);
+  const navigate = useNavigate();
   const jwt = useSelector((state) => state.auth.jwt);
   useEffect(() => {
     axiosInstance
@@ -20,8 +21,27 @@ export default function Cart() {
       })
       .catch((error) => {
         console.error("Error: ", error);
+        if (error.response.data.message === "Invalid Token") {
+          console.log("Invalid Token");
+          navigate("/signin");
+        }
       });
   }, []);
+
+  function handleDelete(id) {
+    // DELETE /api/cart/remove?productId=2
+    axiosInstance
+      .delete(`/api/cart/remove?productId=${id}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+      .then((res) => {
+        console.log("Response: ", res);
+        setCartData(res.data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }
 
   // const cartData = {
   //   id: 2,
@@ -158,7 +178,7 @@ export default function Cart() {
             </div>
             <button
               className="btn btn-error btn-sm"
-              // onClick={() => handleDelete(item.id)}
+              onClick={() => handleDelete(item.product.id)}
             >
               Remove
             </button>
