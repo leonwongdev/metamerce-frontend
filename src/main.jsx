@@ -6,6 +6,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import ProductDetail from "./components/ProductDetail.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Cart from "./components/Cart.jsx";
 
 function Layout() {
   return (
@@ -23,6 +24,8 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <App /> },
       { path: "product/:id", element: <ProductDetail /> },
+      // Cart
+      { path: "cart", element: <Cart /> },
     ],
   },
 ]);
