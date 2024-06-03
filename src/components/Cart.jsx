@@ -3,11 +3,22 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosConfig";
 export default function Cart() {
-  // use useEffect hook to fetch cart data from the server
-  // use the mock cart data below as reference
+  // States
   const [cartData, setCartData] = useState(null);
+
+  // Form states
+  const [street, setStreet] = useState("Sample address street");
+  const [city, setCity] = useState("Toronto");
+  const [province, setProvince] = useState("Ontario");
+  const [country, setCountry] = useState("Canada");
+  const [postalCode, setPostalCode] = useState("M9W6V3");
+
+  // Hook
   const navigate = useNavigate();
+
+  // Redux
   const jwt = useSelector((state) => state.auth.jwt);
+
   useEffect(() => {
     axiosInstance
       .get("/api/cart", {
@@ -16,7 +27,7 @@ export default function Cart() {
         },
       })
       .then((res) => {
-        console.log("Response: ", res);
+        console.log("Get all Cart items Response: ", res);
         setCartData(res.data);
       })
       .catch((error) => {
@@ -88,16 +99,58 @@ export default function Cart() {
   //   postalCode: "62701",
   // };
 
-  // write a function to render a form for user to input their address use the mock address data above as reference
-  // the function should return a form with input fields for street, city, province, country, and postal code
-  // the function should also return a button to submit the form
+  function onPlaceOrder(e) {
+    e.preventDefault();
+    console.log("Place order");
+
+    // Validate form
+    // Check if all fields are filled, use trim to remove whitespace
+    // Else alert user to fill in all fields
+    if (
+      street.trim() === "" ||
+      city.trim() === "" ||
+      province.trim() === "" ||
+      country.trim() === "" ||
+      postalCode.trim() === ""
+    ) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    // API:POST /api/order/place
+    axiosInstance
+      .post(
+        "/api/order/place",
+        {
+          street: street,
+          city: city,
+          province: province,
+          country: country,
+          postalCode: postalCode,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwt}` },
+        }
+      )
+      .then((res) => {
+        console.log("Place order Response: ", res);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Place Order Error: ", error);
+      });
+  }
+
   function renderAddressForm() {
     return (
       <div>
         <h1 className="text-2xl font-bold ml-10 mb-4">
           Fill in the form below to place order:
         </h1>
-        <form className="px-10 flex flex-col gap-3 bg-base-200 rounded-box mx-10 py-10">
+        <form
+          onSubmit={onPlaceOrder}
+          className="px-10 flex flex-col gap-3 bg-base-200 rounded-box mx-10 py-10"
+        >
           <label htmlFor="street" className="text-lg font-semibold">
             Street
           </label>
@@ -107,6 +160,8 @@ export default function Cart() {
             name="street"
             placeholder="Street"
             className="input input-bordered"
+            value={street}
+            onChange={(e) => setStreet(e.target.value)}
           />
           <label htmlFor="city" className="text-lg font-semibold">
             City
@@ -117,6 +172,8 @@ export default function Cart() {
             name="city"
             placeholder="City"
             className="input input-bordered"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
           />
           <label htmlFor="province" className="text-lg font-semibold">
             Province
@@ -127,6 +184,8 @@ export default function Cart() {
             name="province"
             placeholder="Province"
             className="input input-bordered"
+            value={province}
+            onChange={(e) => setProvince(e.target.value)}
           />
           <label htmlFor="country" className="text-lg font-semibold">
             Country
@@ -137,6 +196,8 @@ export default function Cart() {
             name="country"
             placeholder="Country"
             className="input input-bordered"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
           />
           <label htmlFor="postalCode" className="text-lg font-semibold">
             Postal Code
@@ -147,6 +208,8 @@ export default function Cart() {
             name="postalCode"
             placeholder="Postal Code"
             className="input input-bordered"
+            value={postalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
           />
           <button className="btn btn-primary bg-yellow-400 border-yellow-400 hover:bg-yellow-600">
             Place Order
