@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.defaults({ markers: true });
+    ScrollTrigger.defaults({ markers: false });
     /**
      * Base
      */
@@ -80,8 +80,8 @@ export default function Home() {
     /**
      * Materials
      */
-    const material = new THREE.MeshStandardMaterial();
-    material.roughness = 0.7;
+    // const material = new THREE.MeshStandardMaterial();
+    // material.roughness = 0.7;
     // gui.add(material, "metalness").min(0).max(1).step(0.001);
     // gui.add(material, "roughness").min(0).max(1).step(0.001);
 
@@ -91,10 +91,10 @@ export default function Home() {
     // const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
     // sphere.castShadow = true;
 
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
-    plane.rotation.x = -Math.PI * 0.5;
-    plane.position.y = -0.5;
-    plane.receiveShadow = true;
+    // const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+    // plane.rotation.x = -Math.PI * 0.5;
+    // plane.position.y = -0.5;
+    // plane.receiveShadow = true;
     // scene.add(plane);
 
     /**
@@ -138,7 +138,7 @@ export default function Home() {
     // cameraFolder.add(camera.position, "y", -10, 10, 0.01);
     // cameraFolder.add(camera.position, "z", -10, 10, 0.01);
     // Create an object to hold the lookAt position
-    const lookAtPosition = { x: 0, y: 0.5, z: 0 };
+    //const lookAtPosition = { x: 0, y: 0.5, z: 0 };
 
     // Add lookAt position properties to the GUI
     // const lookAtFolder = gui.addFolder("LookAt Position");
@@ -153,13 +153,13 @@ export default function Home() {
     //   .onChange(updateCameraLookAt);
 
     // Function to update the camera's lookAt position
-    function updateCameraLookAt() {
-      console.log(lookAtPosition);
-      camera.lookAt(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
-    }
+    // function updateCameraLookAt() {
+    //   console.log(lookAtPosition);
+    //   camera.lookAt(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
+    // }
 
     // Initial update
-    updateCameraLookAt();
+    //updateCameraLookAt();
 
     // Controls
     // const controls = new OrbitControls(camera, canvas);
@@ -195,121 +195,104 @@ export default function Home() {
     // });
     // Test to load 3d model
     const loader = new GLTFLoader();
-    const storeModel = null;
+    let storeModel = null;
     loader.load("/capstone-shelf-5a.glb", function (gltf) {
-      const storeModel = gltf.scene;
+      storeModel = gltf.scene;
       scene.add(storeModel);
       // const modelFolder = gui.addFolder("storeModel Position");
       // modelFolder.add(storeModel.position, "x", -10, 10, 0.01);
       // modelFolder.add(storeModel.position, "y", -10, 10, 0.01);
       // modelFolder.add(storeModel.position, "z", -10, 10, 0.01);
+      console.log(storeModel.position);
 
       // animation set up
       const scrubValue = true;
       const timeline = new gsap.timeline();
-      timeline.to(
-        storeModel.position,
-        {
-          y: -0.5,
-          scrollTrigger: {
-            trigger: ".first-section",
-            marker: true,
-            start: "top bottom",
-            end: "top center",
-            scrub: scrubValue,
-          },
+      timeline.to(storeModel.position, {
+        y: -0.4,
+        scrollTrigger: {
+          trigger: ".first-section",
+          marker: true,
+          start: "top bottom",
+          end: "top center",
+          scrub: scrubValue,
         },
-        "fig-1"
-      );
-      timeline.to(
-        storeModel.position,
-        {
-          z: 1,
-          scrollTrigger: {
-            trigger: ".first-section",
-            marker: true,
-            start: "top bottom",
-            end: "top center",
-            scrub: scrubValue,
-          },
+      });
+      timeline.to(storeModel.position, {
+        z: 1,
+        scrollTrigger: {
+          trigger: ".first-section",
+          marker: true,
+          start: "top bottom",
+          end: "top center",
+          scrub: scrubValue,
         },
-        "fig-1"
-      );
+      });
 
       // Add a new timeline animation for the second section
-      timeline.to(
+      timeline.fromTo(
         storeModel.position,
+        { x: storeModel.position.x }, // Start from the current x position
         {
-          x: -0.4, // Change this value to adjust the x position
+          x: -0.4,
           scrollTrigger: {
             trigger: ".second-section",
             marker: true,
-            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            start: "top bottom",
             end: "top center",
             scrub: scrubValue,
+            // overwrite: true,
           },
-        },
-        "fig-2"
+        }
       );
 
-      timeline.to(
+      timeline.fromTo(
         storeModel.position,
+        { x: -0.4 }, // Start from the current x position
         {
-          x: -0.6, // Change this value to adjust the x position
+          x: -0.6,
+          y: 0.1,
           scrollTrigger: {
             trigger: ".third-section",
             marker: true,
-            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            start: "top bottom",
             end: "top center",
             scrub: scrubValue,
+            // overwrite: true,
           },
-        },
-        "fig-3"
+        }
       );
 
-      timeline.to(
+      timeline.fromTo(
         storeModel.position,
+        { x: -0.6 }, // Start from the current x position
         {
-          y: 0.1, // Change this value to adjust the x position
-          scrollTrigger: {
-            trigger: ".third-section",
-            marker: true,
-            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
-            end: "top center",
-            scrub: scrubValue,
-          },
-        },
-        "fig-3"
-      );
-
-      timeline.to(
-        storeModel.position,
-        {
-          x: -0.2, // Change this value to adjust the x position
+          x: -0.2,
           scrollTrigger: {
             trigger: ".fourth-section",
             marker: true,
-            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            start: "top bottom",
             end: "top center",
             scrub: scrubValue,
+            // overwrite: true,
           },
-        },
-        "fig-4"
+        }
       );
 
-      timeline.to(
+      timeline.fromTo(
         storeModel.position,
+        { x: -0.2 }, // Start from the current x position
         {
-          x: 0.3, // Change this value to adjust the x position
+          x: 0.3,
           scrollTrigger: {
             trigger: ".fifth-section",
             marker: true,
-            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            start: "top bottom",
             end: "top center",
             scrub: scrubValue,
+            // overwrite: true,
           },
-        },
-        "fig-5"
+        }
       );
 
       // End of load model
@@ -346,11 +329,20 @@ export default function Home() {
         ref={canvasRef}
       ></canvas>
       <div className="z-10 ">
-        <div className="border-solid border-red-500  w-screen h-screen bg-gray-500 bg-opacity-50">
+        <div className="border-solid border-red-500 border-2 w-screen h-screen bg-gray-500 bg-opacity-50">
           <h1>Metamerce</h1>
           <p>Your 3D immersive online shopping experience</p>
         </div>
-        <div className="first-section grid grid-cols-12 mb-96">
+        <div className="first-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2">
+          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5 ">
+            <h1 className="font-bold text-2xl text-center">
+              Naruto Collection
+            </h1>
+            <ProductCarousel className="" />
+          </div>
+        </div>
+
+        <div className="second-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2 border-2">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -359,7 +351,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="second-section grid grid-cols-12 mb-96">
+        <div className="third-section grid grid-cols-12  mb-96 border-solid border-red-500 border-2 border-2">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -368,7 +360,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="third-section grid grid-cols-12  mb-96">
+        <div className="fourth-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2 border-2">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -377,16 +369,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="fourth-section grid grid-cols-12 mb-96">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
-
-        <div className="fifth-section grid grid-cols-12 mb-96">
+        <div className="fifth-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
