@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import axiosInstance from "../api/axiosConfig";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 function ProductCarousel() {
   const [products, setProducts] = useState([]);

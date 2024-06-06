@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Card = (props) => {
+  // generate props validation
+  Card.propTypes = {
+    imageUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+  };
+
   return (
     <div className="card w-96 bg-base-200">
       <figure>

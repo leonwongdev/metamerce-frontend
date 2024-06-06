@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import ProductCarousel from "./ProductCarousel";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import GUI from "lil-gui";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { useRef } from "react";
 import gsap from "gsap";
@@ -84,9 +81,9 @@ export default function Home() {
     directionalLight.shadow.camera.near = 1;
     directionalLight.shadow.camera.far = 6;
     scene.add(directionalLight);
-    const directionalLightCameraHelper = new THREE.CameraHelper(
-      directionalLight.shadow.camera
-    );
+    // const directionalLightCameraHelper = new THREE.CameraHelper(
+    //   directionalLight.shadow.camera
+    // );
     directionalLight.shadow.camera.top = 2;
     directionalLight.shadow.camera.right = 2;
     directionalLight.shadow.camera.bottom = -2;
@@ -379,7 +376,7 @@ export default function Home() {
           <div className="col-start-2 col-end-8 row-start-2 row-end-12">
             <h1 className="text-8xl font-bold text-white">Metamerce</h1>
             <h2 className="text-3xl font-bold text-white">
-              Your "Next-Gen 3D Immersive" online shopping experience
+              Your Next-Gen 3D Immersive online shopping experience
             </h2>
           </div>
         </div>
