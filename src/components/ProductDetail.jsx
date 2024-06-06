@@ -1,14 +1,20 @@
 // import useParams from react-router-dom
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axiosInstance from "../api/axiosConfig";
+
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import GUI from "lil-gui";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const canvasRef = useRef(null);
 
   // Hook
   let { id } = useParams();
@@ -38,6 +44,110 @@ const ProductDetail = () => {
         }
       });
   }, []);
+
+  // Set up three js for loading spiderman.gltf
+  useEffect(() => {
+    console.log("Canvas ref: ", canvasRef.current);
+    // set up three js renderer with canvasRef variable
+    if (canvasRef.current === null) {
+      console.log("product detail's canvas ref is null");
+      return;
+    }
+    // const sizes = {
+    //   width: window.innerWidth,
+    //   height: window.innerHeight,
+    // };
+    const sizes = {
+      width: 400,
+      height: 400,
+    };
+
+    // Set up scene and load spiderman.gltf, then add to scene
+    const scene = new THREE.Scene();
+    const loader = new GLTFLoader();
+    loader.load("/spiderman.gltf", (gltf) => {
+      scene.add(gltf.scene);
+      // set position of the model
+      gltf.scene.position.z = -1;
+      gltf.scene.position.y = -3;
+      // add gui to move the model
+      // const gui = new GUI();
+      // const positionFolder = gui.addFolder("Position");
+      // positionFolder.add(gltf.scene.position, "x").min(-10).max(10).step(0.01);
+      // positionFolder.add(gltf.scene.position, "y").min(-10).max(10).step(0.01);
+      // positionFolder.add(gltf.scene.position, "z").min(-10).max(10).step(0.01);
+    });
+
+    // Set up camera
+    const fov = 75;
+    const aspect = 2; // the canvas default
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 5;
+    // add lil-gui for caemra
+    // const gui = new GUI();
+    // gui.add(camera.position, "x").min(-10).max(10).step(0.01);
+    // gui.add(camera.position, "y").min(-10).max(10).step(0.01);
+    // gui.add(camera.position, "z").min(-10).max(10).step(0.01);
+
+    // Set up lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.1);
+    // gui.add(ambientLight, "intensity").min(0).max(3).step(0.001);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.96);
+    directionalLight.position.set(-1.47, -1.47, 3.5);
+    scene.add(directionalLight);
+
+    scene.background = new THREE.Color(0xe4be9b);
+    // add gui for background color
+    // console log the real hex value
+    // gui
+    //   .addColor(scene, "background")
+    //   .name("Background Color")
+    //   .onChange(() => {
+    //     console.log(scene.background);
+    //   });
+
+    const canvas = canvasRef.current;
+    const renderer = new THREE.WebGLRenderer({ canvas });
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Set up orbit controls
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.enableZoom = true;
+    const tick = () => {
+      //const elapsedTime = clock.getElapsedTime();
+
+      // Update controls
+      controls.update();
+
+      // Render
+      renderer.render(scene, camera);
+
+      // Call tick again on the next frame
+      window.requestAnimationFrame(tick);
+    };
+
+    tick();
+  });
+
+  function renderProductImage(product) {
+    if (product.name !== "Spiderman") {
+      return (
+        <div className="w-1/2">
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="w-full rounded-box"
+          />
+        </div>
+      );
+    }
+    return <canvas className="rounded-box" ref={canvasRef}></canvas>;
+  }
 
   const onAddToCart = () => {
     // Check if user is authenticated first, if not redirect to signin
@@ -115,13 +225,7 @@ const ProductDetail = () => {
       <div className="rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
         <h1 className="font-bold text-2xl text-center mb-6">Product Detail</h1>
         <div className="flex">
-          <div className="w-1/2">
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="w-full rounded-box"
-            />
-          </div>
+          {renderProductImage(product)}
           <div className="w-1/2 px-4">
             <h2 className="text-xl font-bold">Product Name: {product.name}</h2>
             <p>Description</p>

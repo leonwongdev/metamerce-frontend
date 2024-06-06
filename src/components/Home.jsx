@@ -375,7 +375,7 @@ export default function Home() {
         ref={canvasRef}
       ></canvas>
       <div className="z-10 relative">
-        <div className=" w-screen h-screen border-solid border-2 border-red-500 grid grid-cols-12 grid-rows-12">
+        <div className=" w-screen h-screen grid grid-cols-12 grid-rows-12">
           <div className="col-start-2 col-end-8 row-start-2 row-end-12">
             <h1 className="text-8xl font-bold text-white">Metamerce</h1>
             <h2 className="text-3xl font-bold text-white">

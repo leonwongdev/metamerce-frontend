@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+
 const Card = (props) => {
   return (
     <div className="card w-96 bg-base-200">
       <figure>
-        <img src={props.imageUrl} alt="car!" />
+        <img src={props.imageUrl} alt="" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{props.title}</h2>
