@@ -101,7 +101,7 @@ function OrderDetail() {
     }
   }
 
-  return <div className="h-screen">{renderOrderDetail()}</div>;
+  return <div className="h-full pb-10 min-h-screen">{renderOrderDetail()}</div>;
 }
 
 export default OrderDetail;

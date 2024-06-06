@@ -86,7 +86,7 @@ const MyOrders = () => {
     );
   }
 
-  return <div className="h-screen">{renderOrders()}</div>;
+  return <div className="h-full pb-10">{renderOrders()}</div>;
 };
 
 export default MyOrders;
