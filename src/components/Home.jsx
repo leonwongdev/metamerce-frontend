@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.defaults({ markers: false });
+    ScrollTrigger.defaults({ markers: true, immediateRender: false });
     /**
      * Base
      */
@@ -230,25 +230,20 @@ export default function Home() {
       });
 
       // Add a new timeline animation for the second section
-      timeline.fromTo(
-        storeModel.position,
-        { x: storeModel.position.x }, // Start from the current x position
-        {
-          x: -0.4,
-          scrollTrigger: {
-            trigger: ".second-section",
-            marker: true,
-            start: "top bottom",
-            end: "top center",
-            scrub: scrubValue,
-            // overwrite: true,
-          },
-        }
-      );
+      timeline.to(storeModel.position, {
+        x: -0.4,
+        scrollTrigger: {
+          trigger: ".second-section",
+          marker: true,
+          start: "top bottom",
+          end: "top center",
+          scrub: scrubValue,
+          // overwrite: true,
+        },
+      });
 
-      timeline.fromTo(
+      timeline.to(
         storeModel.position,
-        { x: -0.4 }, // Start from the current x position
         {
           x: -0.6,
           y: 0.1,
@@ -260,12 +255,12 @@ export default function Home() {
             scrub: scrubValue,
             // overwrite: true,
           },
-        }
+        },
+        ">"
       );
 
-      timeline.fromTo(
+      timeline.to(
         storeModel.position,
-        { x: -0.6 }, // Start from the current x position
         {
           x: -0.2,
           scrollTrigger: {
@@ -276,12 +271,12 @@ export default function Home() {
             scrub: scrubValue,
             // overwrite: true,
           },
-        }
+        },
+        ">"
       );
 
-      timeline.fromTo(
+      timeline.to(
         storeModel.position,
-        { x: -0.2 }, // Start from the current x position
         {
           x: 0.3,
           scrollTrigger: {
@@ -292,7 +287,8 @@ export default function Home() {
             scrub: scrubValue,
             // overwrite: true,
           },
-        }
+        },
+        ">"
       );
 
       // End of load model
