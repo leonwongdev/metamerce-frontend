@@ -13,6 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.defaults({ markers: true });
     /**
      * Base
      */
@@ -204,17 +205,18 @@ export default function Home() {
       // modelFolder.add(storeModel.position, "z", -10, 10, 0.01);
 
       // animation set up
+      const scrubValue = true;
       const timeline = new gsap.timeline();
       timeline.to(
         storeModel.position,
         {
-          x: -1,
+          y: -0.5,
           scrollTrigger: {
             trigger: ".first-section",
             marker: true,
             start: "top bottom",
             end: "top center",
-            scrub: 0.5,
+            scrub: scrubValue,
           },
         },
         "fig-1"
@@ -228,11 +230,89 @@ export default function Home() {
             marker: true,
             start: "top bottom",
             end: "top center",
-            scrub: 0.5,
+            scrub: scrubValue,
           },
         },
         "fig-1"
       );
+
+      // Add a new timeline animation for the second section
+      timeline.to(
+        storeModel.position,
+        {
+          x: -0.4, // Change this value to adjust the x position
+          scrollTrigger: {
+            trigger: ".second-section",
+            marker: true,
+            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            end: "top center",
+            scrub: scrubValue,
+          },
+        },
+        "fig-2"
+      );
+
+      timeline.to(
+        storeModel.position,
+        {
+          x: -0.6, // Change this value to adjust the x position
+          scrollTrigger: {
+            trigger: ".third-section",
+            marker: true,
+            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            end: "top center",
+            scrub: scrubValue,
+          },
+        },
+        "fig-3"
+      );
+
+      timeline.to(
+        storeModel.position,
+        {
+          y: 0.1, // Change this value to adjust the x position
+          scrollTrigger: {
+            trigger: ".third-section",
+            marker: true,
+            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            end: "top center",
+            scrub: scrubValue,
+          },
+        },
+        "fig-3"
+      );
+
+      timeline.to(
+        storeModel.position,
+        {
+          x: -0.2, // Change this value to adjust the x position
+          scrollTrigger: {
+            trigger: ".fourth-section",
+            marker: true,
+            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            end: "top center",
+            scrub: scrubValue,
+          },
+        },
+        "fig-4"
+      );
+
+      timeline.to(
+        storeModel.position,
+        {
+          x: 0.3, // Change this value to adjust the x position
+          scrollTrigger: {
+            trigger: ".fifth-section",
+            marker: true,
+            start: "top bottom", // When the top of the second section reaches the bottom of the viewport
+            end: "top center",
+            scrub: scrubValue,
+          },
+        },
+        "fig-5"
+      );
+
+      // End of load model
     });
 
     const axesHelper = new THREE.AxesHelper(5);
@@ -241,10 +321,10 @@ export default function Home() {
     /**
      * Animate
      */
-    const clock = new THREE.Clock();
+    //const clock = new THREE.Clock();
 
     const tick = () => {
-      const elapsedTime = clock.getElapsedTime();
+      //const elapsedTime = clock.getElapsedTime();
 
       // Update controls
       //  controls.update();
@@ -270,7 +350,7 @@ export default function Home() {
           <h1>Metamerce</h1>
           <p>Your 3D immersive online shopping experience</p>
         </div>
-        <div className="first-section grid grid-cols-12">
+        <div className="first-section grid grid-cols-12 mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -279,7 +359,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12">
+        <div className="second-section grid grid-cols-12 mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -288,7 +368,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12">
+        <div className="third-section grid grid-cols-12  mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -297,7 +377,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12">
+        <div className="fourth-section grid grid-cols-12 mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -306,16 +386,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-12">
+        <div className="fifth-section grid grid-cols-12 mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
