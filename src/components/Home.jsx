@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.defaults({ markers: true, immediateRender: false });
+    ScrollTrigger.defaults({ markers: true, immediateRender: false }); // set immediateRender to false to prevent the weird snapping back to original position.x bug
     /**
      * Base
      */
