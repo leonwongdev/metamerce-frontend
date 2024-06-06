@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.defaults({ markers: true, immediateRender: false }); // set immediateRender to false to prevent the weird snapping back to original position.x bug
+    ScrollTrigger.defaults({ markers: false, immediateRender: false }); // set immediateRender to false to prevent the weird snapping back to original position.x bug
     /**
      * Base
      */
@@ -294,8 +294,8 @@ export default function Home() {
       // End of load model
     });
 
-    const axesHelper = new THREE.AxesHelper(5);
-    scene.add(axesHelper);
+    // const axesHelper = new THREE.AxesHelper(5);
+    // scene.add(axesHelper);
 
     /**
      * Animate
@@ -325,11 +325,15 @@ export default function Home() {
         ref={canvasRef}
       ></canvas>
       <div className="z-10 ">
-        <div className="border-solid border-red-500 border-2 w-screen h-screen bg-gray-500 bg-opacity-50">
-          <h1>Metamerce</h1>
-          <p>Your 3D immersive online shopping experience</p>
+        <div className=" w-screen h-screen border-solid border-2 border-red-500 grid grid-cols-12 grid-rows-12">
+          <div className="col-start-3 col-end-12 row-start-4 row-end-12">
+            <h1 className="text-6xl font-bold text-white">Metamerce</h1>
+            <h2 className="text-3xl font-bold text-white">
+              Your "Next-Gen 3D Immersive" online shopping experience
+            </h2>
+          </div>
         </div>
-        <div className="first-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2">
+        <div className="first-section grid grid-cols-12 mb-96 ">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5 ">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -338,7 +342,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="second-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2 border-2">
+        <div className="second-section grid grid-cols-12 mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -347,7 +351,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="third-section grid grid-cols-12  mb-96 border-solid border-red-500 border-2 border-2">
+        <div className="third-section grid grid-cols-12  mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -356,7 +360,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="fourth-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2 border-2">
+        <div className="fourth-section grid grid-cols-12 mb-96">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
@@ -365,7 +369,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="fifth-section grid grid-cols-12 mb-96 border-solid border-red-500 border-2">
+        <div className="fifth-section grid grid-cols-12 mb-44">
           <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
             <h1 className="font-bold text-2xl text-center">
               Naruto Collection
