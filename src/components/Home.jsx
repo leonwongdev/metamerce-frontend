@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProductCarousel from "./ProductCarousel";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -7,9 +7,26 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import axiosInstance from "../api/axiosConfig";
+import Card from "./Card";
 
 export default function Home() {
   const canvasRef = useRef(null);
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch products from the server
+    axiosInstance
+      .get("/api/product", {})
+      .then((res) => {
+        console.log("Products Response: ", res);
+        setProducts(res.data);
+      })
+      .catch((error) => {
+        console.error("Products Response Error: ", error);
+      });
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -23,7 +40,9 @@ export default function Home() {
     //return;
     // Canvas
     // const canvas = document.querySelector("canvas.webgl");
-
+    if (canvasRef.current === null) {
+      return;
+    }
     // Scene
     const scene = new THREE.Scene();
     // set to yellow
@@ -211,7 +230,7 @@ export default function Home() {
       timeline.to(storeModel.position, {
         y: -0.4,
         scrollTrigger: {
-          trigger: ".first-section",
+          trigger: ".section-1",
           marker: true,
           start: "top bottom",
           end: "top center",
@@ -221,7 +240,7 @@ export default function Home() {
       timeline.to(storeModel.position, {
         z: 1,
         scrollTrigger: {
-          trigger: ".first-section",
+          trigger: ".section-1",
           marker: true,
           start: "top bottom",
           end: "top center",
@@ -233,7 +252,7 @@ export default function Home() {
       timeline.to(storeModel.position, {
         x: -0.4,
         scrollTrigger: {
-          trigger: ".second-section",
+          trigger: ".section-2",
           marker: true,
           start: "top bottom",
           end: "top center",
@@ -248,7 +267,7 @@ export default function Home() {
           x: -0.6,
           y: 0.1,
           scrollTrigger: {
-            trigger: ".third-section",
+            trigger: ".section-3",
             marker: true,
             start: "top bottom",
             end: "top center",
@@ -264,7 +283,7 @@ export default function Home() {
         {
           x: -0.2,
           scrollTrigger: {
-            trigger: ".fourth-section",
+            trigger: ".section-4",
             marker: true,
             start: "top bottom",
             end: "top center",
@@ -280,7 +299,7 @@ export default function Home() {
         {
           x: 0.3,
           scrollTrigger: {
-            trigger: ".fifth-section",
+            trigger: ".section-5",
             marker: true,
             start: "top bottom",
             end: "top center",
@@ -318,65 +337,53 @@ export default function Home() {
     tick();
   }, []);
 
+  function renderProductCards() {
+    if (!products || products.length === 0) {
+      return;
+    }
+    console.log("Products: ", products);
+    return products.map((product, index) => {
+      let margin = "mb-96";
+      if (index === products.length - 1) {
+        margin = "mb-44";
+      }
+      return (
+        <div
+          key={index}
+          className={`section-${index + 1} grid grid-cols-12 ${margin}`}
+        >
+          <div className="col-start-8 col-end-13 rounded-box">
+            <div className="grid grid-cols-3 gap-4">
+              <Card
+                key={product.id}
+                id={product.id}
+                title={product.name}
+                description={product.description}
+                imageUrl={product.imageUrl}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+
   return (
     <div className="">
       <canvas
-        className="webgl fixed top-[64px] left-0 -z-10"
+        className="webgl fixed top-[64px] left-0 z-[2]"
         ref={canvasRef}
       ></canvas>
-      <div className="z-10 ">
+      <div className="z-10 relative">
         <div className=" w-screen h-screen border-solid border-2 border-red-500 grid grid-cols-12 grid-rows-12">
-          <div className="col-start-3 col-end-12 row-start-4 row-end-12">
-            <h1 className="text-6xl font-bold text-white">Metamerce</h1>
+          <div className="col-start-2 col-end-8 row-start-2 row-end-12">
+            <h1 className="text-8xl font-bold text-white">Metamerce</h1>
             <h2 className="text-3xl font-bold text-white">
               Your "Next-Gen 3D Immersive" online shopping experience
             </h2>
           </div>
         </div>
-        <div className="first-section grid grid-cols-12 mb-96 ">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5 ">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
-
-        <div className="second-section grid grid-cols-12 mb-96">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
-
-        <div className="third-section grid grid-cols-12  mb-96">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
-
-        <div className="fourth-section grid grid-cols-12 mb-96">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
-
-        <div className="fifth-section grid grid-cols-12 mb-44">
-          <div className="col-start-8 col-end-13 rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
-            <h1 className="font-bold text-2xl text-center">
-              Naruto Collection
-            </h1>
-            <ProductCarousel className="" />
-          </div>
-        </div>
+        {renderProductCards()}
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ const ProductDetail = () => {
 
   // Get product from server by id
   useEffect(() => {
+    window.scrollTo(0, 0);
     axiosInstance
       .get(`/api/product/${id}`, {
         headers: {
