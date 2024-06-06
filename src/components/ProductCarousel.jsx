@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 function ProductCarousel() {
   const [products, setProducts] = useState([]);
-  const jwt = useSelector((state) => state.auth.jwt);
+
   useEffect(() => {
     // Fetch products from the server, set header with jwt
     axiosInstance
@@ -71,7 +71,7 @@ function ProductCarousel() {
       return;
     }
     return (
-      <div className="carousel carousel-center p-4 space-x-4 rounded-box h-[400px]">
+      <div className="relative carousel carousel-center p-4 space-x-4 rounded-box h-[400px]">
         {products.map((p, index) => (
           <div
             key={p.id}

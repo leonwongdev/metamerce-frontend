@@ -9,7 +9,7 @@ const ProfileDropDown = () => {
     navigate("/");
   };
   return (
-    <>
+    <div className="">
       <ul
         tabIndex={0}
         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
@@ -29,7 +29,7 @@ const ProfileDropDown = () => {
           <a onClick={onLogout}>Logout</a>
         </li>
       </ul>
-    </>
+    </div>
   );
 };
 
@@ -37,7 +37,7 @@ function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userEmail = useSelector((state) => state.auth.email);
   return (
-    <nav>
+    <nav className="sticky top-0 z-20">
       <div className="navbar bg-base-100">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-xl">
