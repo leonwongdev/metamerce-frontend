@@ -24,11 +24,11 @@ body {
 
 .scroll-indicator::before {
   animation: bounce 1s ease infinite;
-  border: solid 1px #ffffff;
+  border: solid 1px #802e2e;
   font-weight: 800;
   border-radius: 5px;
   bottom: 15rem;
-  color: #ffffff;
+  color: #802e2e;
   content: "Scroll ╲╱";
   font-size: 2rem;
   height: 4rem;

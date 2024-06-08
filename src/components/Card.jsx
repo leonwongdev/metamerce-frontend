@@ -8,6 +8,7 @@ const Card = (props) => {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
   };
 
   return (
@@ -16,11 +17,14 @@ const Card = (props) => {
         <img src={props.imageUrl} alt="" />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">{props.title}</h2>
-        <p>{props.description}</p>
+        <h2 className="card-title text-sm font-bold">{props.title}</h2>
+        <p className="max-h-24 text-ellipsis overflow-hidden whitespace-nowrap text-sm">
+          {props.description}
+        </p>
+        <p className="text-base font-semibold">Price ${props.price}</p>
         <div className="card-actions justify-end">
           <Link to={`/product/${props.id}`} className="btn btn-primary">
-            Check out the Product!
+            Interact!
           </Link>
         </div>
       </div>

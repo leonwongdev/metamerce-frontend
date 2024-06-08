@@ -34,7 +34,7 @@ export default function Home() {
      */
     // Debug
 
-    const gui = new GUI();
+    // const gui = new GUI();
     //return;
     // Canvas
     // const canvas = document.querySelector("canvas.webgl");
@@ -44,7 +44,7 @@ export default function Home() {
     // Scene
     const scene = new THREE.Scene();
     // set to yellow
-    scene.background = new THREE.Color(0xe4be9b);
+    scene.background = new THREE.Color(0xede3cc);
     // use GUI to change the background color
     // gui.addColor(scene, "background").name("Background Color");
     // console log the real hex value
@@ -118,8 +118,8 @@ export default function Home() {
      * Sizes
      */
     const sizes = {
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
+      width: document.getElementById("root").clientWidth,
+      height: document.body.clientHeight,
     };
 
     window.addEventListener("resize", () => {
@@ -222,15 +222,26 @@ export default function Home() {
       // modelFolder.add(storeModel.position, "y", -10, 10, 0.01);
       // modelFolder.add(storeModel.position, "z", -10, 10, 0.01);
       if (sizes.width < 400) {
-        storeModel.scale.set(0.5, 0.5, 0.5);
-        storeModel.position.y = 1;
+        // storeModel.scale.set(0.5, 0.5, 0.5);
+        // storeModel.position.y = 1;
       }
       // storeModel.position.z = -1.8;
       // animation set up
-      const scrubValue = true;
+      const scrubValue = 0.6;
       const timeline = new gsap.timeline();
+      let responsiveScale = 1;
+      let zoom = 1;
+      if (sizes.width < 640) {
+        responsiveScale = 3;
+        zoom = 6;
+        camera.position.z = 4;
+      } else if (sizes.width <= 1024) {
+        responsiveScale = 1.5;
+        zoom = 1.5;
+        camera.position.z = 2.3;
+      }
       timeline.to(storeModel.position, {
-        y: -0.4,
+        y: sizes.width * -0.0002 * responsiveScale,
         scrollTrigger: {
           trigger: ".section-1",
           marker: true,
@@ -240,7 +251,7 @@ export default function Home() {
         },
       });
       timeline.to(storeModel.position, {
-        z: 1,
+        z: sizes.width * 0.0007 * zoom,
         scrollTrigger: {
           trigger: ".section-1",
           marker: true,
@@ -252,7 +263,7 @@ export default function Home() {
 
       // Add a new timeline animation for the second section
       timeline.to(storeModel.position, {
-        x: -0.4,
+        x: sizes.width * -0.0004 * responsiveScale,
         scrollTrigger: {
           trigger: ".section-2",
           marker: true,
@@ -266,8 +277,8 @@ export default function Home() {
       timeline.to(
         storeModel.position,
         {
-          x: -0.6,
-          y: 0.1,
+          x: sizes.width * -0.0006 * responsiveScale,
+          y: sizes.width * 0.0001 * responsiveScale,
           scrollTrigger: {
             trigger: ".section-3",
             marker: true,
@@ -283,7 +294,7 @@ export default function Home() {
       timeline.to(
         storeModel.position,
         {
-          x: -0.2,
+          x: sizes.width * -0.0001 * responsiveScale,
           scrollTrigger: {
             trigger: ".section-4",
             marker: true,
@@ -299,7 +310,7 @@ export default function Home() {
       timeline.to(
         storeModel.position,
         {
-          x: 0.3,
+          x: sizes.width * 0.0003 * responsiveScale,
           scrollTrigger: {
             trigger: ".section-5",
             marker: true,
@@ -347,7 +358,7 @@ export default function Home() {
     return products.map((product, index) => {
       let margin = "mb-96";
       if (index === products.length - 1) {
-        margin = "mb-44";
+        margin = "mb-80 md:mb-44";
       }
       return (
         <div
@@ -362,6 +373,7 @@ export default function Home() {
                 title={product.name}
                 description={product.description}
                 imageUrl={product.imageUrl}
+                price={product.price}
               />
             </div>
           </div>
@@ -371,18 +383,18 @@ export default function Home() {
   }
 
   return (
-    <div className="">
+    <div className="flex justify-center">
       <canvas
-        className="webgl fixed top-[64px] left-0 z-[2] w-screen h-screen block"
+        className="webgl fixed top-[64px] z-[2] w-screen h-screen block"
         ref={canvasRef}
       ></canvas>
       <div className="z-10 relative">
-        <div className=" w-full h-screen grid grid-cols-12 grid-rows-12">
-          <div className="col-start-2 col-end-8 row-start-2 row-end-12">
-            <h1 className="text-3xl md:text-5xl lg:text-8xl font-bold text-white">
+        <div className=" w-full h-screen grid grid-cols-12 grid-rows-12 scroll-indicator">
+          <div className="col-start-2 col-end-12 md:col-start-2 md:col-end-8 row-start-2 row-end-12">
+            <h1 className="text-3xl md:text-5xl lg:text-8xl font-bold text-neutral">
               Metamerce
             </h1>
-            <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-white">
+            <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-neutral-500">
               Your Next-Gen 3D Immersive online shopping experience
             </h2>
           </div>
