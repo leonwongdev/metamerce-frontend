@@ -123,7 +123,7 @@ export default function Home() {
     };
 
     window.addEventListener("resize", () => {
-      console.log("🚀 ~ window.addEventListener ~ sizes:", sizes);
+      // console.log("🚀 ~ window.addEventListener ~ sizes:", sizes);
       // Update sizes
       sizes.width = window.innerWidth;
       sizes.height = window.innerHeight;

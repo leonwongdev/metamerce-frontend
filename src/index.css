@@ -25,6 +25,7 @@ body {
 .scroll-indicator::before {
   animation: bounce 1s ease infinite;
   border: solid 1px #802e2e;
+  background-color: white;
   font-weight: 800;
   border-radius: 5px;
   bottom: 15rem;

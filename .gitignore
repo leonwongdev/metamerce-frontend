@@ -25,3 +25,4 @@ dist-ssr
 
 /public/capstone-shelf-5a.glb
 /public/spiderman.gltf
+.env*
