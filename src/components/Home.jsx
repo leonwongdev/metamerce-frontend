@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axiosInstance from "../api/axiosConfig";
 import Card from "./Card";
+import GUI from "lil-gui";
 
 export default function Home() {
   const canvasRef = useRef(null);
@@ -17,7 +18,7 @@ export default function Home() {
     axiosInstance
       .get("/api/product", {})
       .then((res) => {
-        console.log("Products Response: ", res);
+        console.debug("Products Response: ", res);
         setProducts(res.data);
       })
       .catch((error) => {
@@ -33,7 +34,7 @@ export default function Home() {
      */
     // Debug
 
-    // const gui = new GUI();
+    const gui = new GUI();
     //return;
     // Canvas
     // const canvas = document.querySelector("canvas.webgl");
@@ -117,11 +118,12 @@ export default function Home() {
      * Sizes
      */
     const sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight,
     };
 
     window.addEventListener("resize", () => {
+      console.log("🚀 ~ window.addEventListener ~ sizes:", sizes);
       // Update sizes
       sizes.width = window.innerWidth;
       sizes.height = window.innerHeight;
@@ -219,8 +221,11 @@ export default function Home() {
       // modelFolder.add(storeModel.position, "x", -10, 10, 0.01);
       // modelFolder.add(storeModel.position, "y", -10, 10, 0.01);
       // modelFolder.add(storeModel.position, "z", -10, 10, 0.01);
-      console.log(storeModel.position);
-
+      if (sizes.width < 400) {
+        storeModel.scale.set(0.5, 0.5, 0.5);
+        storeModel.position.y = 1;
+      }
+      // storeModel.position.z = -1.8;
       // animation set up
       const scrubValue = true;
       const timeline = new gsap.timeline();
@@ -349,7 +354,7 @@ export default function Home() {
           key={index}
           className={`section-${index + 1} grid grid-cols-12 ${margin}`}
         >
-          <div className="col-start-8 col-end-13 rounded-box">
+          <div className="col-start-7 col-end-12 rounded-box">
             <div className="grid grid-cols-3 gap-4">
               <Card
                 key={product.id}
@@ -368,14 +373,16 @@ export default function Home() {
   return (
     <div className="">
       <canvas
-        className="webgl fixed top-[64px] left-0 z-[2]"
+        className="webgl fixed top-[64px] left-0 z-[2] w-screen h-screen block"
         ref={canvasRef}
       ></canvas>
       <div className="z-10 relative">
-        <div className=" w-screen h-screen grid grid-cols-12 grid-rows-12 scroll-indicator">
+        <div className=" w-full h-screen grid grid-cols-12 grid-rows-12">
           <div className="col-start-2 col-end-8 row-start-2 row-end-12">
-            <h1 className="text-8xl font-bold text-white">Metamerce</h1>
-            <h2 className="text-3xl font-bold text-white">
+            <h1 className="text-3xl md:text-5xl lg:text-8xl font-bold text-white">
+              Metamerce
+            </h1>
+            <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-white">
               Your Next-Gen 3D Immersive online shopping experience
             </h2>
           </div>
