@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosConfig";
@@ -17,11 +17,15 @@ export default function Cart() {
 
   // Hook
   const navigate = useNavigate();
-
+  const location = useLocation();
   // Redux
   const jwt = useSelector((state) => state.auth.jwt);
 
   useEffect(() => {
+    if (!jwt) {
+      // Redirect to the login page and pass the current location as state
+      navigate("/signin", { state: { from: location } });
+    }
     axiosInstance
       .get("/api/cart", {
         headers: {
@@ -270,7 +274,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 w-full">
       {renderModal()}
       <div className="p-10 flex gap-3 flex-col">
         <h1 className="text-2xl font-bold">Cart Summary</h1>

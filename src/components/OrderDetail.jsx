@@ -33,7 +33,7 @@ function OrderDetail() {
   function renderOrderDetail() {
     if (order !== null) {
       return (
-        <div id="order-detail" className="bg-base-200 p-10 m-10 rounded-box">
+        <div id="order-detail" className="bg-base-200 p-5 rounded-box">
           <h1 className="text-2xl font-bold mb-4">Order Detail</h1>
           <p className="mb-2">
             <span className="font-bold">Order ID:</span>{" "}
@@ -69,39 +69,43 @@ function OrderDetail() {
           </p>
 
           <h2 className="text-xl font-bold mt-4 mb-2">Items</h2>
-          <table className="table bg-yellow-100">
-            <thead>
-              <tr>
-                <th>Thumbnail</th>
-                <th className="">Product</th>
-                <th className="">Quantity</th>
-                <th className="">Total Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.items &&
-                order.items.map((item) => (
-                  <tr key={item.id} className="">
-                    <td>
-                      <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
-                          <img src={item.product.imageUrl} alt="" />
+          <div className="overflow-x-auto">
+            <table className="table bg-yellow-100">
+              <thead>
+                <tr>
+                  <th>Thumbnail</th>
+                  <th className="">Product</th>
+                  <th className="">Quantity</th>
+                  <th className="">Total Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order.items &&
+                  order.items.map((item) => (
+                    <tr key={item.id} className="">
+                      <td>
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img src={item.product.imageUrl} alt="" />
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="">{item.product.name}</td>
-                    <td className="">{item.quantity}</td>
-                    <td className="">${item.totalPrice}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="">{item.product.name}</td>
+                      <td className="">{item.quantity}</td>
+                      <td className="">${item.totalPrice}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       );
     }
   }
 
-  return <div className="h-full pb-10 min-h-screen">{renderOrderDetail()}</div>;
+  return (
+    <div className="h-full min-h-screen w-full p-5">{renderOrderDetail()}</div>
+  );
 }
 
 export default OrderDetail;

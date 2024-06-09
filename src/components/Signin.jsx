@@ -1,15 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import axiosInstance from "../api/axiosConfig";
-import { useSelector, useDispatch } from "react-redux";
-import { signin, signout } from "../redux/slice/authSlice";
+import { useDispatch } from "react-redux";
+import { signin } from "../redux/slice/authSlice";
 
 function SignIn() {
-  const [email, setEmail] = useState("leon2@leonwong.dev");
+  const [email, setEmail] = useState("leon@leonwong.dev");
   const [password, setPassword] = useState("12345678");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const onFormSubmit = (e) => {
     e.preventDefault();
     console.log("Email: ", email);
@@ -23,14 +24,14 @@ function SignIn() {
         console.log("Response: ", res);
 
         dispatch(signin({ email: email, jwt: res.data.jwt }));
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
   };
   return (
-    <div className="h-screen flex justify-center items-center ">
+    <div className="h-full min-h-screen flex justify-center items-center ">
       <div className="bg-base-200 p-16 rounded shadow-2xl w-2/3">
         <h2 className="text-3xl font-bold mb-10 text-gray-800">Sign In</h2>
         <form className="space-y-5" onSubmit={onFormSubmit}>

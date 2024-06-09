@@ -1,5 +1,5 @@
 // import useParams from react-router-dom
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import axiosInstance from "../api/axiosConfig";
@@ -7,6 +7,7 @@ import axiosInstance from "../api/axiosConfig";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { div } from "three/examples/jsm/nodes/Nodes.js";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
@@ -18,6 +19,7 @@ const ProductDetail = () => {
   // Hook
   let { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Redux
   const jwt = useSelector((state) => state.auth.jwt);
@@ -57,8 +59,8 @@ const ProductDetail = () => {
     //   height: window.innerHeight,
     // };
     const sizes = {
-      width: 400,
-      height: 400,
+      width: document.getElementById("product-canvas").clientWidth,
+      height: document.getElementById("product-canvas").clientWidth * 0.75,
     };
 
     // Set up scene and load spiderman.gltf, then add to scene
@@ -136,7 +138,7 @@ const ProductDetail = () => {
   function renderProductImage(product) {
     if (product.name !== "Spiderman") {
       return (
-        <div className="w-1/2">
+        <div className="w-full flex justify-center">
           <img
             src={product.imageUrl}
             alt={product.name}
@@ -145,13 +147,20 @@ const ProductDetail = () => {
         </div>
       );
     }
-    return <canvas className="rounded-box" ref={canvasRef}></canvas>;
+    return (
+      <div className="w-full" id="product-canvas">
+        <span className="text-xl font-semibold">
+          👆Drag the product to view difference angle!
+        </span>
+        <canvas className="rounded-box" ref={canvasRef}></canvas>
+      </div>
+    );
   }
 
   const onAddToCart = () => {
     // Check if user is authenticated first, if not redirect to signin
     if (!jwt) {
-      navigate("/signin");
+      navigate("/signin", { state: { from: location.pathname } });
       return;
     }
 
@@ -219,13 +228,13 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="h-screen">
+    <div className="h-full w-full flex justify-center ">
       {renderModal()}
-      <div className="rounded-box bg-base-200 px-8 mx-36 py-8 my-5">
+      <div className="rounded-box bg-base-200 px-8 w-11/12 py-8 my-5">
         <h1 className="font-bold text-2xl text-center mb-6">Product Detail</h1>
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row">
           {renderProductImage(product)}
-          <div className="w-1/2 px-4">
+          <div className="lg:w-1/2 lg:px-4">
             <h2 className="text-xl font-bold">Product Name: {product.name}</h2>
             <p>Description</p>
             <p className="text-gray-500">{product.description}</p>

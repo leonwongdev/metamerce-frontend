@@ -13,6 +13,12 @@ const authSlice = createSlice({
       state.email = action.payload.email;
       state.jwt = action.payload.jwt;
     },
+    // signup
+    signup: (state, action) => {
+      state.isAuthenticated = true;
+      state.email = action.payload.email;
+      state.jwt = action.payload.jwt;
+    },
     signout: (state) => {
       state.isAuthenticated = false;
       state.email = null;
@@ -21,6 +27,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { signin, signout } = authSlice.actions;
+export const { signin, signout, signup } = authSlice.actions;
 
 export default authSlice.reducer;

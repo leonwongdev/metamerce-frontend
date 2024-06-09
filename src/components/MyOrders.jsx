@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axiosInstance from "../api/axiosConfig";
 
@@ -9,9 +9,16 @@ const MyOrders = () => {
 
   // Hook
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Redux
   const jwt = useSelector((state) => state.auth.jwt);
+
+  if (!jwt) {
+    // Redirect to the login page and pass the current
+    // location as state
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
 
   useEffect(() => {
     // Fetch orders from the server
@@ -49,27 +56,21 @@ const MyOrders = () => {
 
   function renderOrders() {
     return (
-      <div className="bg-base-200 p-10 m-10 rounded-box">
-        <table className="table">
+      <div className="bg-base-200 rounded-box overflow-x-auto w-full">
+        <table className="table table-pin-rows">
           <thead>
             <tr>
+              <th className="">Action</th>
               <th className="">Order ID</th>
               <th className="">Order Status</th>
               <th className="">Total Price</th>
               <th className="">Date</th>
-              <th className="">Action</th>
             </tr>
           </thead>
           <tbody>
             {orders &&
               orders.map((order) => (
                 <tr key={order.id} className="hover">
-                  <td className="">{order.id}</td>
-                  <td className="">{order.orderStatus}</td>
-                  <td className="">{order.totalPrice}</td>
-                  <td className="">
-                    {new Date(order.createdAt).toLocaleString()}
-                  </td>
                   <td className="">
                     <button
                       className="btn btn-neutral"
@@ -77,6 +78,12 @@ const MyOrders = () => {
                     >
                       View Details
                     </button>
+                  </td>
+                  <td className="">{order.id}</td>
+                  <td className="">{order.orderStatus}</td>
+                  <td className="">{order.totalPrice}</td>
+                  <td className="">
+                    {new Date(order.createdAt).toLocaleString()}
                   </td>
                 </tr>
               ))}
@@ -86,7 +93,11 @@ const MyOrders = () => {
     );
   }
 
-  return <div className="h-full pb-10">{renderOrders()}</div>;
+  return (
+    <div className="h-full min-h-screen w-full pb-10 px-10">
+      {renderOrders()}
+    </div>
+  );
 };
 
 export default MyOrders;

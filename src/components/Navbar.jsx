@@ -19,12 +19,12 @@ const ProfileDropDown = () => {
             My Orders
           </Link>
         </li>
-        <li>
+        {/* <li>
           <a className="justify-between">Profile</a>
         </li>
         <li>
           <a>Settings</a>
-        </li>
+        </li> */}
         <li>
           <a onClick={onLogout}>Logout</a>
         </li>
