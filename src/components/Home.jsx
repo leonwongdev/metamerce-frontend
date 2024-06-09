@@ -170,16 +170,8 @@ export default function Home() {
       camera.position.z = 2.3;
     }
     timeline.to(storeModel.position, {
+      x: sizes.width * 0.0003 * responsiveScale,
       y: sizes.width * -0.0002 * responsiveScale,
-      scrollTrigger: {
-        trigger: ".section-1",
-        marker: true,
-        start: "top bottom",
-        end: "top center",
-        scrub: scrubValue,
-      },
-    });
-    timeline.to(storeModel.position, {
       z: sizes.width * 0.0007 * zoom,
       scrollTrigger: {
         trigger: ".section-1",
@@ -189,12 +181,34 @@ export default function Home() {
         scrub: scrubValue,
       },
     });
+    // timeline.to(storeModel.position, {
+    //   z: sizes.width * 0.0007 * zoom,
+    //   scrollTrigger: {
+    //     trigger: ".section-1",
+    //     marker: true,
+    //     start: "top bottom",
+    //     end: "top center",
+    //     scrub: scrubValue,
+    //   },
+    // });
 
     // Add a new timeline animation for the second section
     timeline.to(storeModel.position, {
-      x: sizes.width * -0.0004 * responsiveScale,
+      x: sizes.width * -0.0001 * responsiveScale,
       scrollTrigger: {
         trigger: ".section-2",
+        marker: true,
+        start: "top bottom",
+        end: "top center",
+        scrub: scrubValue,
+        // overwrite: true,
+      },
+    });
+
+    timeline.to(storeModel.position, {
+      x: sizes.width * -0.0005 * responsiveScale,
+      scrollTrigger: {
+        trigger: ".section-3",
         marker: true,
         start: "top bottom",
         end: "top center",
@@ -206,24 +220,8 @@ export default function Home() {
     timeline.to(
       storeModel.position,
       {
-        x: sizes.width * -0.0006 * responsiveScale,
+        x: sizes.width * -0.0005 * responsiveScale,
         y: sizes.width * 0.0001 * responsiveScale,
-        scrollTrigger: {
-          trigger: ".section-3",
-          marker: true,
-          start: "top bottom",
-          end: "top center",
-          scrub: scrubValue,
-          // overwrite: true,
-        },
-      },
-      ">"
-    );
-
-    timeline.to(
-      storeModel.position,
-      {
-        x: sizes.width * -0.0001 * responsiveScale,
         scrollTrigger: {
           trigger: ".section-4",
           marker: true,
@@ -239,9 +237,25 @@ export default function Home() {
     timeline.to(
       storeModel.position,
       {
-        x: sizes.width * 0.0003 * responsiveScale,
+        x: sizes.width * -0.0001 * responsiveScale,
         scrollTrigger: {
           trigger: ".section-5",
+          marker: true,
+          start: "top bottom",
+          end: "top center",
+          scrub: scrubValue,
+          // overwrite: true,
+        },
+      },
+      ">"
+    );
+
+    timeline.to(
+      storeModel.position,
+      {
+        x: sizes.width * 0.0003 * responsiveScale,
+        scrollTrigger: {
+          trigger: ".section-6",
           marker: true,
           start: "top bottom",
           end: "top center",
