@@ -12,7 +12,7 @@ const Card = (props) => {
   };
 
   return (
-    <div className="card col-span-full max-w-96 bg-base-200">
+    <div className="card col-span-full max-w-96 bg-base-200 glass opacity-90">
       <figure>
         <img src={props.imageUrl} alt="" />
       </figure>

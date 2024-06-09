@@ -159,14 +159,18 @@ export default function Home() {
     const scrubValue = 0.6;
     const timeline = new gsap.timeline();
     let responsiveScale = 1;
-    let zoom = 1;
-    if (sizes.width < 640) {
+    let zoom = 1.35;
+    if (sizes.width < 576) {
+      responsiveScale = 3.2;
+      zoom = 9.4;
+      camera.position.z = 4;
+    } else if (sizes.width < 640) {
       responsiveScale = 3;
       zoom = 6;
       camera.position.z = 4;
     } else if (sizes.width <= 1024) {
-      responsiveScale = 1.5;
-      zoom = 1.5;
+      responsiveScale = 1.3;
+      zoom = 2.2;
       camera.position.z = 2.3;
     }
     timeline.to(storeModel.position, {
@@ -221,7 +225,7 @@ export default function Home() {
       storeModel.position,
       {
         x: sizes.width * -0.0005 * responsiveScale,
-        y: sizes.width * 0.0001 * responsiveScale,
+        y: sizes.width * 0.00006 * responsiveScale,
         scrollTrigger: {
           trigger: ".section-4",
           marker: true,
