@@ -110,7 +110,7 @@ export default function Home() {
     // Test to load 3d model
     const loader = new GLTFLoader();
     let storeModel = null;
-    loader.load("/capstone-shelf-low-poly.glb", function (gltf) {
+    loader.load("/store.glb", function (gltf) {
       storeModel = gltf.scene;
       scene.add(storeModel);
       setIsModelLoaded(true);
