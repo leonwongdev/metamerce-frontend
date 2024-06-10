@@ -7,10 +7,10 @@ import axiosInstance from "../api/axiosConfig";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { div } from "three/examples/jsm/nodes/Nodes.js";
+import { div, log } from "three/examples/jsm/nodes/Nodes.js";
 
 const ProductDetail = () => {
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -48,12 +48,13 @@ const ProductDetail = () => {
 
   // Set up three js for loading spiderman.gltf
   useEffect(() => {
-    console.log("Canvas ref: ", canvasRef.current);
+    // console.log("Canvas ref: ", canvasRef.current);
     // set up three js renderer with canvasRef variable
-    if (canvasRef.current === null) {
-      console.log("product detail's canvas ref is null");
+    if (product === null) {
+      console.log("product detail's  is null");
       return;
     }
+    console.log("Setting up three js for product: ", product);
     // const sizes = {
     //   width: window.innerWidth,
     //   height: window.innerHeight,
@@ -66,11 +67,15 @@ const ProductDetail = () => {
     // Set up scene and load spiderman.gltf, then add to scene
     const scene = new THREE.Scene();
     const loader = new GLTFLoader();
-    loader.load("/spiderman.gltf", (gltf) => {
+    loader.load(product.modelUrl, (gltf) => {
       scene.add(gltf.scene);
       // set position of the model
-      gltf.scene.position.z = -1;
-      gltf.scene.position.y = -3;
+      gltf.scene.position.z = 0;
+      gltf.scene.position.y = -2;
+
+      // scale the model
+      gltf.scene.scale.set(1.1, 1.1, 1.1);
+
       // add gui to move the model
       // const gui = new GUI();
       // const positionFolder = gui.addFolder("Position");
@@ -78,6 +83,9 @@ const ProductDetail = () => {
       // positionFolder.add(gltf.scene.position, "y").min(-10).max(10).step(0.01);
       // positionFolder.add(gltf.scene.position, "z").min(-10).max(10).step(0.01);
     });
+    // add axes helper
+    // const axesHelper = new THREE.AxesHelper(5);
+    // scene.add(axesHelper);
 
     // Set up camera
     const fov = 75;
@@ -133,12 +141,16 @@ const ProductDetail = () => {
     };
 
     tick();
-  });
+  }, [product]);
 
   function renderProductImage(product) {
-    if (product.name !== "Spiderman") {
+    if (product === null) {
+      return <span className="loading loading-dots loading-lg"></span>;
+    }
+
+    if (product.modalUrl === null) {
       return (
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mb-5">
           <img
             src={product.imageUrl}
             alt={product.name}
@@ -148,10 +160,13 @@ const ProductDetail = () => {
       );
     }
     return (
-      <div className="w-full" id="product-canvas">
-        <span className="text-xl font-semibold">
+      <div className="w-full mb-5" id="product-canvas">
+        <p className="text-lg font-semibold">
           👆Drag the product to view difference angle!
-        </span>
+        </p>
+        <p className="text-lg font-semibold">
+          👌Pinch the model to zoom in/out!
+        </p>
         <canvas className="rounded-box" ref={canvasRef}></canvas>
       </div>
     );
@@ -227,16 +242,24 @@ const ProductDetail = () => {
     );
   }
 
+  if (product === null) {
+    return (
+      <div className="w-full flex justify-center">
+        <span className="loading loading-lg"></span>
+      </div>
+    );
+  }
+
   return (
-    <div className="h-full w-full flex justify-center ">
+    <div className=" w-full flex justify-center ">
       {renderModal()}
       <div className="rounded-box bg-base-200 px-8 w-11/12 py-8 my-5">
         <h1 className="font-bold text-2xl text-center mb-6">Product Detail</h1>
         <div className="flex flex-col lg:flex-row">
           {renderProductImage(product)}
           <div className="lg:w-1/2 lg:px-4">
-            <h2 className="text-xl font-bold">Product Name: {product.name}</h2>
-            <p>Description</p>
+            <h2 className="text-xl font-bold">Product: {product.name}</h2>
+            {/* <h3 className="text-lg font-semibold">Description</h3> */}
             <p className="text-gray-500">{product.description}</p>
             <p className="text-lg font-bold mt-4">Price: ${product.price}</p>
             <div className="flex flex-col mt-4">

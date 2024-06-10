@@ -15,7 +15,7 @@ import OrderDetail from "./components/OrderDetail.jsx";
 
 function Layout() {
   return (
-    <div className="layout w-full">
+    <div className="layout w-full min-h-screen">
       <Navbar />
       <Outlet /> {/* This is where child routes will render */}
     </div>

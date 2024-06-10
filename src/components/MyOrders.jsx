@@ -61,10 +61,10 @@ const MyOrders = () => {
           <thead>
             <tr>
               <th className="">Action</th>
+              <th className="">Date</th>
               <th className="">Order ID</th>
               <th className="">Order Status</th>
               <th className="">Total Price</th>
-              <th className="">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -79,12 +79,12 @@ const MyOrders = () => {
                       View Details
                     </button>
                   </td>
-                  <td className="">{order.id}</td>
-                  <td className="">{order.orderStatus}</td>
-                  <td className="">{order.totalPrice}</td>
                   <td className="">
                     {new Date(order.createdAt).toLocaleString()}
                   </td>
+                  <td className="">{order.id}</td>
+                  <td className="">{order.orderStatus}</td>
+                  <td className="">{order.totalPrice}</td>
                 </tr>
               ))}
           </tbody>

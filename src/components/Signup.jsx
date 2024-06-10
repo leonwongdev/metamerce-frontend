@@ -46,8 +46,8 @@ function SignUp() {
       });
   }
   return (
-    <div className="h-full flex justify-center items-center">
-      <div className="bg-base-200 p-16 rounded shadow-2xl w-2/3">
+    <div className="min-h-screen h-full flex justify-center items-center">
+      <div className="bg-base-200 p-5 lg:p-16 rounded shadow-2xl w-11/12">
         <h2 className="text-3xl font-bold mb-10 text-gray-800">Sign Up</h2>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <input
