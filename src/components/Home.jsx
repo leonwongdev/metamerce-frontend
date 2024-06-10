@@ -15,7 +15,10 @@ export default function Home() {
   const [isModelLoaded, setIsModelLoaded] = useState(false);
 
   useEffect(() => {
-    // console.log("Home.jsx useEffect called");
+    // Show intro-modal
+    // document.getElementById("intro-modal").showModal();
+    // <button className="btn" onClick={()=>document.getElementById('my_modal_1').showModal()}>open modal</button>
+
     // Fetch products from the server
     axiosInstance
       .get("/api/product", {})
@@ -326,6 +329,82 @@ export default function Home() {
 
   return (
     <div className="flex justify-center">
+      <dialog id="intro-modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">
+            Hello! Welcome to the metamerce - A 3D e-commerce!
+          </h3>
+          <p className="py-4">
+            Hi, I am Leon, a full-stack developer and this is a demo project to
+            showcase my skills in 3D modeling and web development. This project
+            is built using <strong>React, Three.js, and GSAP</strong>. The 3D
+            model is created using Blender and the products are fetched from a
+            REST API built using <strong>Java Spring boot</strong> and{" "}
+            <strong>SQL Server database</strong>. Enjoy your stay!
+          </p>
+          <h4 className="font-semibold">Github Repo</h4>
+          <p>
+            <a
+              href="https://github.com/leonwongdev/metamerce-frontend"
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
+              Frontend Repo
+            </a>{" "}
+            /{" "}
+            <a
+              href="https://github.com/leonwongdev/metamerce-backend"
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
+              Backend Repo
+            </a>{" "}
+          </p>
+
+          <h4 className="font-semibold">Contacts: Linkedin / Github</h4>
+          <p className="mb-4">
+            <a
+              href="https://www.linkedin.com/in/leonwonglww/"
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
+              Linkedin
+            </a>{" "}
+            /{" "}
+            <a
+              href="https://github.com/leonwongdev"
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
+              Github
+            </a>
+          </p>
+          <h4 className="font-semibold">Tutorial</h4>
+          <ul>
+            <li>Scroll down to check out all the 3D products.</li>
+            <li>Click on the products to interact with them!</li>
+            <li>
+              Click on the cart icon to view your cart items, you will be
+              redirected to login if you are a guest.
+            </li>
+            <li>
+              Click on the user icon to sign in or sign up and check your
+              orders.
+            </li>
+            <li>Click on the logo to return to the home page.</li>
+          </ul>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
       <canvas
         className="webgl fixed top-[64px] z-[2] w-screen h-screen block"
         ref={canvasRef}
@@ -341,9 +420,15 @@ export default function Home() {
             <h1 className="text-3xl md:text-5xl lg:text-8xl font-bold text-neutral">
               Metamerce
             </h1>
-            <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-neutral-700">
+            <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-neutral-700 mb-2">
               Your Next-Gen 3D Immersive online shopping experience
             </h2>
+            <button
+              className="btn"
+              onClick={() => document.getElementById("intro-modal").showModal()}
+            >
+              Introduction
+            </button>
             {renderProgress()}
           </div>
         </div>
