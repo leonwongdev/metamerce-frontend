@@ -6,8 +6,10 @@ import axiosInstance from "../api/axiosConfig";
 function OrderDetail() {
   let { id } = useParams();
   const [order, setOrder] = useState(null);
+  const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
   const navigate = useNavigate();
   const jwt = useSelector((state) => state.auth.jwt);
+  const role = useSelector((state) => state.auth.role);
 
   useEffect(() => {
     console.log("Order ID: ", id);
@@ -30,6 +32,72 @@ function OrderDetail() {
       });
   }, []);
 
+  const onOrderStatusChange = (e) => {
+    const newOrderStatus = e.target.value;
+    console.log("New Order Status: ", newOrderStatus);
+    setIsUpdatingOrderStatus(true);
+    axiosInstance
+      .put(
+        `/api/order/${id}`,
+        {
+          orderStatus: newOrderStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("Order Status Update Response: ", res);
+        setIsUpdatingOrderStatus(false);
+        setOrder({ ...order, orderStatus: newOrderStatus });
+      })
+      .catch(() => {
+        setIsUpdatingOrderStatus(false);
+        alert("Error updating order status");
+      });
+  };
+
+  const renderOrderStatusSetting = (order) => {
+    // check if user is admin
+    // if user is not admin, return normal text
+    // If user is admin, return a dropdown to change order status
+    if (role === "ROLE_ADMIN") {
+      const status = ["PLACED", "SHIPPED", "DELIVERED", "CANCELLED"];
+      return (
+        <div className="mb-2">
+          <label htmlFor="orderStatus" className="font-bold">
+            Order Status:
+          </label>
+          <select
+            name="orderStatus"
+            id="orderStatus"
+            className="select m-2"
+            onChange={onOrderStatusChange}
+          >
+            {/* Generate options and set selected */}
+            {status.map((s) => (
+              <option key={s} value={s} selected={order.orderStatus === s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          {isUpdatingOrderStatus ? (
+            <span className="loading loading-spinner"></span>
+          ) : null}
+        </div>
+      );
+    } else {
+      return (
+        <p className="mb-2">
+          <span className="font-bold">Order Status:</span>{" "}
+          <span className="">{order.orderStatus}</span>
+        </p>
+      );
+    }
+  };
+
   function renderOrderDetail() {
     if (order !== null) {
       return (
@@ -39,10 +107,7 @@ function OrderDetail() {
             <span className="font-bold">Order ID:</span>{" "}
             <span className="">{order.id}</span>
           </p>
-          <p className="mb-2">
-            <span className="font-bold">Order Status:</span>{" "}
-            <span className="">{order.orderStatus}</span>
-          </p>
+          {renderOrderStatusSetting(order)}
           <p className="mb-2">
             <span className="font-bold">Created At: </span>
             <span className="">{order.createdAt}</span>

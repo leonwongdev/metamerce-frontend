@@ -3,10 +3,12 @@ import { useState } from "react";
 import axiosInstance from "../api/axiosConfig";
 import { useDispatch } from "react-redux";
 import { signin } from "../redux/slice/authSlice";
+import LoadingButton from "./LoadingButton.jsx";
 
 function SignIn() {
   const [email, setEmail] = useState("leon@leonwong.dev");
   const [password, setPassword] = useState("12345678");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -15,20 +17,27 @@ function SignIn() {
     e.preventDefault();
     console.log("Email: ", email);
     console.log("Password", password);
+    setIsLoading(true);
     axiosInstance
       .post("/auth/signin", {
         email: email,
         password: password,
       })
       .then((res) => {
-        console.log("Response: ", res);
+        console.log("Sign in Response: ", res);
 
-        dispatch(signin({ email: email, jwt: res.data.jwt }));
+        dispatch(
+          signin({ email: email, jwt: res.data.jwt, role: res.data.role })
+        );
+        setIsLoading(false);
         navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error("Error: ", error);
-      });
+      }).finally(() => {
+        setIsLoading(false);
+
+    });
   };
   return (
     <div className="h-full min-h-screen flex justify-center items-center ">
@@ -57,9 +66,10 @@ function SignIn() {
               setPassword(e.target.value);
             }}
           />
-          <button className="btn btn-neutral" type="submit">
+          {/* <button className="btn btn-neutral" type="submit">
             Sign In
-          </button>
+          </button> */}
+          <LoadingButton label={"Sign In"} type={"submit"} styleClasses={"btn-neutral"} isLoading={isLoading} />
           <Link to="/signup" className="btn bg-green-400 hover:bg-green-600">
             No account? Sign up here!
           </Link>

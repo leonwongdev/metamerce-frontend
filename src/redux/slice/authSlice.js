@@ -12,17 +12,20 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.email = action.payload.email;
       state.jwt = action.payload.jwt;
+      state.role = action.payload.role;
     },
     // signup
     signup: (state, action) => {
       state.isAuthenticated = true;
       state.email = action.payload.email;
       state.jwt = action.payload.jwt;
+      state.role = action.payload.role;
     },
     signout: (state) => {
       state.isAuthenticated = false;
       state.email = null;
       state.jwt = null;
+      state.role = null;
     },
   },
 });

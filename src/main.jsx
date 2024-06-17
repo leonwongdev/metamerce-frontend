@@ -12,6 +12,10 @@ import SignUp from "./components/Signup.jsx";
 import SignIn from "./components/Signin.jsx";
 import MyOrders from "./components/MyOrders.jsx";
 import OrderDetail from "./components/OrderDetail.jsx";
+import AdminDashboard from "./components/admin/AdminDashboard.jsx";
+import ManageProduct from "./components/admin/ManageProduct.jsx";
+import EditProduct from "./components/admin/EditProduct.jsx";
+import ManageOrders from "./components/admin/ManageOrders.jsx";
 
 function Layout() {
   return (
@@ -39,6 +43,16 @@ const router = createBrowserRouter([
       { path: "myorders", element: <MyOrders /> },
       // Order Detail
       { path: "order/:id", element: <OrderDetail /> },
+      // admin
+      { path: "admin/dashboard", element: <AdminDashboard /> },
+      // admin manage products
+      { path: "admin/products", element: <ManageProduct /> },
+      // Edit product
+      { path: "admin/products/edit/:productId", element: <EditProduct /> },
+      // Admin manage orders
+      { path: "admin/orders", element: <ManageOrders /> },
+      // Admin edit order
+      { path: "admin/orders/edit/:id", element: <OrderDetail /> },
     ],
   },
 ]);

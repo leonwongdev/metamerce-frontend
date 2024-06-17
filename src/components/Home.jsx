@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axiosInstance from "../api/axiosConfig";
 import Card from "./Card";
-import GUI from "lil-gui";
 
 export default function Home() {
   const canvasRef = useRef(null);
@@ -37,7 +36,6 @@ export default function Home() {
     /**
      * Base
      */
-
     if (products.length === 0) {
       return;
     }

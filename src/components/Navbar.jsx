@@ -4,10 +4,29 @@ import { signout } from "../redux/slice/authSlice";
 const ProfileDropDown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // get user role
+  const role = useSelector((state) => state.auth.role);
+
   const onLogout = () => {
     dispatch(signout());
     navigate("/");
   };
+
+  const renderAdminLink = () => {
+    // check if user is admin
+    if (role !== "ROLE_ADMIN") {
+      return null;
+    }
+    return (
+      <li>
+        <Link to="/admin/dashboard" className="justify-between">
+          Admin Dashboard
+        </Link>
+      </li>
+    );
+  };
+
   return (
     <div className="">
       <ul
@@ -19,6 +38,7 @@ const ProfileDropDown = () => {
             My Orders
           </Link>
         </li>
+        {renderAdminLink()}
         {/* <li>
           <a className="justify-between">Profile</a>
         </li>
@@ -99,7 +119,12 @@ function Navbar() {
               <div className="avatar placeholder">
                 <div className="bg-neutral text-neutral-content rounded-full w-11">
                   {isAuthenticated ? (
-                    <span>{userEmail}</span>
+                    <span>
+                      {
+                        // Show email username before @
+                        userEmail.split("@")[0]
+                      }
+                    </span>
                   ) : (
                     <Link to="/signin">SignIn</Link>
                   )}
